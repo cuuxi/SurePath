@@ -1,0 +1,29 @@
+@page
+@model LoginModel
+@inject Cuuxi.SurePath.Portal.Services.TranslationService Translations
+@{
+    ViewData["Title"] = Translations.T("portal.login.title", "Log ind");
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <h2 class="mb-4">@Translations.T("portal.login.title", "Log ind")</h2>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">@Translations.T("portal.login.username", "Brugernavn")</label>
+                <input asp-for="Username" class="form-control" autocomplete="username" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">@Translations.T("portal.login.password", "Adgangskode")</label>
+                <input asp-for="Password" type="password" class="form-control" autocomplete="current-password" />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">@Translations.T("portal.login.submit", "Log ind")</button>
+        </form>
+    </div>
+</div>

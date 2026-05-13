@@ -1,0 +1,85 @@
+@inject Cuuxi.SurePath.Web.Services.TranslationService Translations
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SurePath</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Cuuxi.SurePath.Web.styles.css" asp-append-version="true" />
+    <style>
+        body.show-tkeys [data-tkey] {
+            outline: 2px solid #fd7e14;
+            position: relative;
+        }
+        body.show-tkeys [data-tkey]::after {
+            content: attr(data-tkey);
+            position: absolute;
+            top: -1.3em;
+            left: 0;
+            background: #fd7e14;
+            color: #000;
+            font-size: 0.65rem;
+            font-family: monospace;
+            padding: 0 4px;
+            white-space: nowrap;
+            z-index: 9999;
+            border-radius: 2px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand fw-bold" asp-page="/Index">SurePath</a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1"></ul>
+                    <ul class="navbar-nav align-items-center gap-2">
+                        <li class="nav-item">
+                            <button id="tkey-toggle" class="btn btn-sm btn-outline-warning" onclick="toggleTKeys()">
+                                <span id="tkey-show">@Translations.T("web.showkeys", "Vis nøgler")</span>
+                                <span id="tkey-hide" style="display:none">@Translations.T("web.hidekeys", "Skjul nøgler")</span>
+                            </button>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+                                @(ViewData["Lang"]?.ToString()?.ToUpper() ?? "DA")
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="da">Dansk</a></li>
+                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="en">English</a></li>
+                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="de">Deutsch</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted mt-4">
+        <div class="container py-2">
+            &copy; 2026 SurePath
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function toggleTKeys() {
+            var active = document.body.classList.toggle('show-tkeys');
+            document.getElementById('tkey-show').style.display = active ? 'none' : '';
+            document.getElementById('tkey-hide').style.display = active ? '' : 'none';
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,49 @@
+@page
+@model Cuuxi.SurePath.Backend.Pages.Translations.IndexModel
+@inject Cuuxi.SurePath.Backend.Services.TranslationService Translations
+@{
+    ViewData["Title"] = Translations.T("backend.translations.title", "Oversættelser");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>@Translations.T("backend.translations.title", "Oversættelser")</h2>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">@Translations.T("backend.translations.newkey", "Ny nøgle")</div>
+    <div class="card-body">
+        <form method="post" class="row g-2">
+            <div class="col-md-4">
+                <input asp-for="NewKey" class="form-control" placeholder="@Translations.T("backend.translations.key.placeholder", "f.eks. nav.home")" />
+            </div>
+            <div class="col-md-5">
+                <input asp-for="NewDescription" class="form-control" placeholder="@Translations.T("backend.translations.desc.placeholder", "Beskrivelse (valgfri)")" />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">@Translations.T("backend.translations.addkey", "Tilføj nøgle")</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>@Translations.T("backend.translations.col.key", "Nøgle")</th>
+            <th>@Translations.T("backend.translations.col.description", "Beskrivelse")</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var key in Model.Keys)
+        {
+            <tr>
+                <td><code>@key.Key</code></td>
+                <td class="text-muted">@key.Description</td>
+                <td>
+                    <a asp-page="/Translations/Edit" asp-route-key="@key.Key" class="btn btn-sm btn-outline-primary">@Translations.T("backend.translations.edit", "Rediger")</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

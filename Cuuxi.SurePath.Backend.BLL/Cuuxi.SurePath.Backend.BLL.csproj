@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cuuxi.Toolbox.Framework.Connector" Version="0.0.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Models\DTO\" />
+    <Folder Include="Models\DIO\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cuuxi.SurePath.Backend.DAL\Cuuxi.SurePath.Backend.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

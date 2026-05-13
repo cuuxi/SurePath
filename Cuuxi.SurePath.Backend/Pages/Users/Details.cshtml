@@ -1,0 +1,88 @@
+@page "{id:int}"
+@model Cuuxi.SurePath.Backend.Pages.Users.DetailsModel
+@inject Cuuxi.SurePath.Backend.Services.TranslationService Translations
+@{
+    ViewData["Title"] = $"{Model.User?.FirstName} {Model.User?.LastName}";
+}
+
+@if (Model.User is null)
+{
+    <p class="text-danger">@Translations.T("backend.users.details.notfound", "Bruger ikke fundet.")</p>
+    return;
+}
+
+<div class="mb-3">
+    <a asp-page="/Users/Index" class="btn btn-sm btn-outline-secondary">&larr; @Translations.T("backend.users.details.back", "Tilbage")</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">@Translations.T("backend.users.details.contact", "Kontaktoplysninger")</div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-5">@Translations.T("backend.users.details.id", "Id")</dt>
+                    <dd class="col-7">@Model.User.Id</dd>
+                    <dt class="col-5">@Translations.T("backend.users.details.firstname", "Fornavn")</dt>
+                    <dd class="col-7">@Model.User.FirstName</dd>
+                    <dt class="col-5">@Translations.T("backend.users.details.lastname", "Efternavn")</dt>
+                    <dd class="col-7">@Model.User.LastName</dd>
+                    <dt class="col-5">@Translations.T("backend.users.details.country", "Land")</dt>
+                    <dd class="col-7">@Model.User.CountryCode</dd>
+                    <dt class="col-5">@Translations.T("backend.users.details.status", "Status")</dt>
+                    <dd class="col-7">
+                        @if (Model.User.IsActive)
+                        {
+                            <span class="badge bg-success">@Translations.T("backend.users.status.active", "Aktiv")</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@Translations.T("backend.users.status.inactive", "Inaktiv")</span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h5>@Translations.T("backend.users.details.loginhistory", "Login historik")</h5>
+        @if (!Model.LoginLogs.Any())
+        {
+            <p class="text-muted">@Translations.T("backend.users.details.nologs", "Ingen login forsøg registreret.")</p>
+        }
+        else
+        {
+            <table class="table table-sm table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>@Translations.T("backend.users.loginlog.time", "Tidspunkt")</th>
+                        <th>@Translations.T("backend.users.loginlog.provider", "Udbyder")</th>
+                        <th>@Translations.T("backend.users.loginlog.key", "Nøgle")</th>
+                        <th>@Translations.T("backend.users.loginlog.result", "Resultat")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model.LoginLogs)
+                    {
+                        <tr>
+                            <td>@log.LoggedAt.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss")</td>
+                            <td>@log.Provider</td>
+                            <td>@log.ProviderKey</td>
+                            <td>
+                                @if (log.Success)
+                                {
+                                    <span class="badge bg-success">@Translations.T("backend.users.loginlog.ok", "OK")</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">@Translations.T("backend.users.loginlog.fail", "Fejl")</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

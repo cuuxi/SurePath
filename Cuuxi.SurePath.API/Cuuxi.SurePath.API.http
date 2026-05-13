@@ -1,0 +1,6 @@
+@Cuuxi.SurePath.API_HostAddress = http://localhost:5076
+
+GET {{Cuuxi.SurePath.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

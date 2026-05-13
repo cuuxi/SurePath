@@ -1,0 +1,15 @@
+@page
+@model IndexModel
+@inject Cuuxi.SurePath.Web.Services.TranslationService Translations
+@{
+    ViewData["Title"] = Translations.T("web.title", "SurePath");
+    ViewData["Lang"] = Translations.Lang;
+}
+
+<div class="py-5 text-center">
+    <h1 class="display-5 fw-bold" data-tkey="web.welcome.title">@Translations.T("web.welcome.title", "Velkommen til SurePath")</h1>
+    <p class="col-md-8 mx-auto lead mt-3" data-tkey="web.welcome.description">@Translations.T("web.welcome.description", "Din komplette platform til sikker håndtering af data og processer.")</p>
+    <a class="btn btn-primary btn-lg mt-4" href="https://localhost:7228" data-tkey="web.portal.link">
+        @Translations.T("web.portal.link", "Gå til Portal") &rarr;
+    </a>
+</div>
