@@ -15,6 +15,9 @@ namespace Cuuxi.SurePath.Backend.DAL.Repositories
         public Task<Dictionary<string, string>> GetDictionaryAsync(string languageCode) =>
             Connector.Dal.Translations.GetDictionaryAsync(languageCode);
 
+        public Task<Dictionary<string, string>> GetDictionaryByPrefixAsync(string languageCode, string keyPrefix) =>
+            Connector.Dal.Translations.GetDictionaryByPrefixAsync(languageCode, keyPrefix);
+
         public Task<TranslationDto> CreateAsync(string languageCode, string key, string value) =>
             Connector.Dal.Translations.CreateAsync(languageCode, key, value);
 

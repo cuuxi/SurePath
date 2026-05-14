@@ -40,6 +40,11 @@ namespace Cuuxi.SurePath.DAL.Repositories
                 .Where(e => e.LanguageCode == languageCode)
                 .ToDictionaryAsync(e => e.Key, e => e.Value);
 
+        public async Task<Dictionary<string, string>> GetDictionaryByPrefixAsync(string languageCode, string keyPrefix)
+            => await settings.DbContext.Translations
+                .Where(e => e.LanguageCode == languageCode && e.Key.StartsWith(keyPrefix))
+                .ToDictionaryAsync(e => e.Key, e => e.Value);
+
         public async Task<TranslationDto> CreateAsync(string languageCode, string key, string value)
         {
             var entity = new Translation { LanguageCode = languageCode, Key = key, Value = value };

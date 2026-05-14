@@ -7,7 +7,7 @@ namespace Cuuxi.SurePath.Backend.BLL.Services
         public TranslationService(Connector connector) : base(connector) { }
 
         public Task<Dictionary<string, string>> GetDictionaryAsync(string languageCode) =>
-            Connector.DAL.Translations.GetDictionaryAsync(languageCode);
+            Connector.DAL.Translations.GetDictionaryByPrefixAsync(languageCode, "backend.");
 
         public Task<List<TranslationKeyDto>> GetAllKeysAsync() =>
             Connector.DAL.TranslationKeys.GetAllAsync();

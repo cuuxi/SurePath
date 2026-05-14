@@ -19,13 +19,13 @@ namespace Cuuxi.SurePath.Web.DAL
             return new Connector(this.settings);
         }
 
-
         public TestRepository Test => this.connectorHandler.GetRepository<TestRepository>();
-
+        public TranslationsRepository Translations => this.connectorHandler.GetRepository<TranslationsRepository>();
 
         public void Dispose()
         {
             this.connectorHandler.Dispose();
+            this.settings.Dispose();
         }
     }
 }

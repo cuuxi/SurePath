@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuuxi.Toolbox.Framework.Connector" Version="0.0.1.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Cuuxi.SurePath.DAL\Cuuxi.SurePath.DAL.csproj" />
+    <ProjectReference Include="..\Cuuxi.SurePath.Portal.BLL\Cuuxi.SurePath.Portal.BLL.csproj" />
   </ItemGroup>
 
 </Project>

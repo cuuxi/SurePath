@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Cuuxi.SurePath.DAL;
+using Cuuxi.SurePath.Portal.BLL;
 using Cuuxi.SurePath.Portal.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -33,29 +33,28 @@ public class LoginModel : PageModel
     {
         await _translations.EnsureLoadedAsync();
 
-        var login = await _connector.UserLogins.FindAsync("Basic", Username);
+        var login = await _connector.Users.FindLoginAsync("Basic", Username);
 
         if (login is null)
         {
-            await _connector.UserLoginLogs.CreateAsync("Basic", Username, success: false);
+            await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: false);
             ErrorMessage = _translations.T("portal.login.error.invalid", "Ukendt brugernavn eller forkert adgangskode.");
             return Page();
         }
 
-        var secret = await _connector.UserLogins.GetSecretAsync("Basic", Username);
-        var valid = secret is not null && BCrypt.Net.BCrypt.Verify(Password, secret);
-
+        var valid = await _connector.Users.VerifyPasswordAsync("Basic", Username, Password);
         var user = valid ? await _connector.Users.GetAsync(login.UserId) : null;
+
         if (!valid || user is null || !user.IsActive)
         {
-            await _connector.UserLoginLogs.CreateAsync("Basic", Username, success: false, userId: login.UserId);
+            await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: false, userId: login.UserId);
             ErrorMessage = valid && user is not null
                 ? _translations.T("portal.login.error.inactive", "Din konto er ikke aktiv.")
                 : _translations.T("portal.login.error.invalid", "Ukendt brugernavn eller forkert adgangskode.");
             return Page();
         }
 
-        await _connector.UserLoginLogs.CreateAsync("Basic", Username, success: true, userId: user.Id);
+        await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: true, userId: user.Id);
 
         var claims = new List<Claim>
         {

@@ -1,5 +1,5 @@
-using Cuuxi.SurePath.DAL;
 using Cuuxi.SurePath.DAL.Models.DTO;
+using Cuuxi.SurePath.Portal.BLL;
 using Cuuxi.SurePath.Portal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,14 +36,14 @@ public class ProfileModel : PageModel
             LastName = user.LastName;
             CountryCode = user.CountryCode;
         }
-        Countries = await _connector.Countries.GetAllAsync();
+        Countries = await _connector.Users.GetCountriesAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
         await _translations.EnsureLoadedAsync();
         await _connector.Users.UpdateAsync(UserId, firstName: FirstName, lastName: LastName, countryCode: CountryCode);
-        Countries = await _connector.Countries.GetAllAsync();
+        Countries = await _connector.Users.GetCountriesAsync();
         TempData["Success"] = _translations.T("portal.profile.saved", "Dine oplysninger er gemt.");
         return RedirectToPage();
     }
