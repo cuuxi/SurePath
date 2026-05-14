@@ -1,11 +1,15 @@
 @inject Cuuxi.SurePath.Web.Services.TranslationService Translations
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@(ViewData["Lang"]?.ToString() ?? "da")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SurePath</title>
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="@Translations.T("web.meta.description", "SurePath analyserer dine forsikringer uvildigt med AI. Find ud af om du er korrekt dækket og om du betaler for meget.")" />
     <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Cuuxi.SurePath.Web.styles.css" asp-append-version="true" />
@@ -32,54 +36,67 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand fw-bold" asp-page="/Index">SurePath</a>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1"></ul>
-                    <ul class="navbar-nav align-items-center gap-2">
-                        <li class="nav-item">
-                            <button id="tkey-toggle" class="btn btn-sm btn-outline-warning" onclick="toggleTKeys()">
-                                <span id="tkey-show">@Translations.T("web.showkeys", "Vis nøgler")</span>
-                                <span id="tkey-hide" style="display:none">@Translations.T("web.hidekeys", "Skjul nøgler")</span>
-                            </button>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
-                                @(ViewData["Lang"]?.ToString()?.ToUpper() ?? "DA")
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="da">Dansk</a></li>
-                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="en">English</a></li>
-                                <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="de">Deutsch</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+
+    <nav class="sp-navbar navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" asp-page="/Index">Sure<span>Path</span></a>
+            <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="#features" data-tkey="web.nav.features">@Translations.T("web.nav.features", "Funktioner")</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works" data-tkey="web.nav.how">@Translations.T("web.nav.how", "Sådan virker det")</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing" data-tkey="web.nav.pricing">@Translations.T("web.nav.pricing", "Pris")</a></li>
+                </ul>
+                <ul class="navbar-nav align-items-lg-center gap-2">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            @(ViewData["Lang"]?.ToString()?.ToUpper() ?? "DA")
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="da">Dansk</a></li>
+                            <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="en">English</a></li>
+                            <li><a class="dropdown-item" asp-page="/Index" asp-route-lang="de">Deutsch</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn-cta" href="https://localhost:7228" data-tkey="web.nav.cta">@Translations.T("web.nav.cta", "Kom i gang")</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <footer class="border-top footer text-muted mt-4">
-        <div class="container py-2">
-            &copy; 2026 SurePath
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <footer class="sp-footer">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                <div>
+                    <div class="footer-brand">Sure<span>Path</span></div>
+                    <div class="mt-1" style="font-size:0.8rem;" data-tkey="web.footer.tagline">@Translations.T("web.footer.tagline", "Uvildigt forsikringsoverblik drevet af AI")</div>
+                </div>
+                <nav class="sp-footer-links">
+                    <a asp-page="/Privacy" data-tkey="web.footer.privacy">@Translations.T("web.footer.privacy", "Privatlivspolitik")</a>
+                    <a href="#" data-tkey="web.footer.terms">@Translations.T("web.footer.terms", "Vilkår")</a>
+                    <a href="#" data-tkey="web.footer.contact">@Translations.T("web.footer.contact", "Kontakt")</a>
+                    <button id="tkey-toggle" onclick="toggleTKeys()" style="background:none;border:none;padding:0;color:rgba(255,255,255,0.2);font-size:0.75rem;cursor:pointer;">
+                        <span id="tkey-show">@Translations.T("web.showkeys", "Vis nøgler")</span>
+                        <span id="tkey-hide" style="display:none">@Translations.T("web.hidekeys", "Skjul nøgler")</span>
+                    </button>
+                </nav>
+            </div>
+            <hr style="border-color:rgba(255,255,255,0.1);margin:1.25rem 0 1rem;" />
+            <div>&copy; 2026 SurePath. <span data-tkey="web.footer.rights">@Translations.T("web.footer.rights", "Alle rettigheder forbeholdes.")</span></div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        function toggleTKeys() {
-            var active = document.body.classList.toggle('show-tkeys');
-            document.getElementById('tkey-show').style.display = active ? 'none' : '';
-            document.getElementById('tkey-hide').style.display = active ? '' : 'none';
-        }
-    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

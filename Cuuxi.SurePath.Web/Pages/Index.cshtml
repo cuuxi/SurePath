@@ -2,14 +2,429 @@
 @model IndexModel
 @inject Cuuxi.SurePath.Web.Services.TranslationService Translations
 @{
-    ViewData["Title"] = Translations.T("web.title", "SurePath");
+    ViewData["Title"] = Translations.T("web.title", "SurePath — Uvildigt forsikringsoverblik drevet af AI");
     ViewData["Lang"] = Translations.Lang;
 }
 
-<div class="py-5 text-center">
-    <h1 class="display-5 fw-bold" data-tkey="web.welcome.title">@Translations.T("web.welcome.title", "Velkommen til SurePath")</h1>
-    <p class="col-md-8 mx-auto lead mt-3" data-tkey="web.welcome.description">@Translations.T("web.welcome.description", "Din komplette platform til sikker håndtering af data og processer.")</p>
-    <a class="btn btn-primary btn-lg mt-4" href="https://localhost:7228" data-tkey="web.portal.link">
-        @Translations.T("web.portal.link", "Gå til Portal") &rarr;
-    </a>
-</div>
+<!-- ================================================
+     HERO
+     ================================================ -->
+<section class="sp-hero">
+    <div class="sp-hero-arc"></div>
+
+    <div class="container sp-hero-content">
+        <div class="row align-items-center">
+            <!-- Left: Text -->
+            <div class="col-lg-6">
+                <div class="sp-overline">
+                    <span class="sp-overline-dot"></span>
+                    <span data-tkey="web.hero.overline">@Translations.T("web.hero.overline", "AI-drevet forsikringsrådgivning")</span>
+                </div>
+                <h1 class="sp-hero-h1">
+                    <span class="line-white" data-tkey="web.hero.title1">@Translations.T("web.hero.title1", "Er din forsikring")</span>
+                    <span class="line-cyan" data-tkey="web.hero.title2">@Translations.T("web.hero.title2", "for dyr?")</span>
+                </h1>
+                <p class="sp-hero-lead" data-tkey="web.hero.sub">@Translations.T("web.hero.sub", "SurePath analyserer dine forsikringer uvildigt med AI — du får klare svar på, hvad du betaler for, hvad du er dækket af, og hvad der gemmer sig i det med småt.")</p>
+                <div class="sp-hero-btns">
+                    <a href="https://localhost:7228" class="btn-sp-primary" data-tkey="web.hero.cta.primary">
+                        @Translations.T("web.hero.cta.primary", "Kom i gang for kun 200 kr/år") &rarr;
+                    </a>
+                    <a href="#how-it-works" class="btn-sp-ghost" data-tkey="web.hero.cta.secondary">
+                        @Translations.T("web.hero.cta.secondary", "Læs mere") &darr;
+                    </a>
+                </div>
+                <div class="sp-trust-row">
+                    <div class="sp-trust-item">
+                        <div class="sp-trust-ico">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div>
+                            <div class="sp-trust-label">100% Uvildig</div>
+                            <div class="sp-trust-desc">Ingen forsikringsaftaler</div>
+                        </div>
+                    </div>
+                    <div class="sp-trust-item">
+                        <div class="sp-trust-ico">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <div>
+                            <div class="sp-trust-label">GDPR</div>
+                            <div class="sp-trust-desc">Dine data er sikre</div>
+                        </div>
+                    </div>
+                    <div class="sp-trust-item">
+                        <div class="sp-trust-ico">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <div class="sp-trust-label">200 kr/år</div>
+                            <div class="sp-trust-desc">Ingen binding</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Oval visual -->
+            <div class="col-lg-5 offset-lg-1 mt-5 mt-lg-0">
+                <div class="sp-hero-visual">
+                    <div class="sp-visual-glow"></div>
+                    <div class="sp-mockup-oval">
+                        <div class="sp-oval-score">
+                            <span class="sp-oval-score-num">73</span>
+                            <span class="sp-oval-score-lbl">Score</span>
+                        </div>
+                        <div class="sp-oval-title" data-tkey="web.hero.card.title">@Translations.T("web.hero.card.title", "Din forsikringsanalyse")</div>
+                        <div class="sp-oval-rows">
+                            <div class="sp-oval-row warn">
+                                <div class="sp-oval-dot"></div>
+                                <span class="sp-oval-row-name" data-tkey="web.hero.stat1.label">@Translations.T("web.hero.stat1.label", "Indboforsikring")</span>
+                                <span class="sp-oval-row-tag">Tjek</span>
+                            </div>
+                            <div class="sp-oval-row alert">
+                                <div class="sp-oval-dot"></div>
+                                <span class="sp-oval-row-name" data-tkey="web.hero.stat2.label">@Translations.T("web.hero.stat2.label", "Bilforsikring")</span>
+                                <span class="sp-oval-row-tag">Dyrt</span>
+                            </div>
+                            <div class="sp-oval-row ok">
+                                <div class="sp-oval-dot"></div>
+                                <span class="sp-oval-row-name" data-tkey="web.hero.stat3.label">@Translations.T("web.hero.stat3.label", "Ulykkesforsikring")</span>
+                                <span class="sp-oval-row-tag">OK</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sp-float-card bottom-left">
+                        <div class="sp-float-icon cyan">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="sp-float-title">AI Agent aktiv</div>
+                            <div class="sp-float-sub">Stil et spørgsmål nu →</div>
+                        </div>
+                    </div>
+                    <div class="sp-float-card top-right">
+                        <div class="sp-float-icon green">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div>
+                            <div class="sp-float-title">Dækning analyseret</div>
+                            <div class="sp-float-sub">3 huller fundet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     PAIN POINTS
+     ================================================ -->
+<section class="sp-section" style="background:var(--sp-bg);">
+    <div class="container">
+        <div class="text-center mb-5 sp-fade-in">
+            <div class="sp-section-tag" data-tkey="web.pain.tag">@Translations.T("web.pain.tag", "Kender du det?")</div>
+            <h2 class="sp-section-title" data-tkey="web.pain.title">@Translations.T("web.pain.title", "Forsikringer er komplicerede. Det burde de ikke være.")</h2>
+            <p class="sp-section-sub mx-auto" data-tkey="web.pain.sub">@Translations.T("web.pain.sub", "De fleste betaler for forsikringer de ikke forstår, ikke ved om de har brug for, og måske slet ikke er dækket af.")</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 sp-fade-in sp-fade-in-delay-1">
+                <div class="sp-pain-card">
+                    <div class="sp-pain-card-top"></div>
+                    <div class="sp-pain-card-body">
+                        <div class="sp-pain-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+                            </svg>
+                        </div>
+                        <h3 data-tkey="web.pain.1.title">@Translations.T("web.pain.1.title", "Dokumenter ingen læser")</h3>
+                        <p data-tkey="web.pain.1.desc">@Translations.T("web.pain.1.desc", "Hundredvis af sider med betingelser og undtagelser skrevet til advokater — ikke til dig. Vi gennemgår det hele for dig.")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 sp-fade-in sp-fade-in-delay-2">
+                <div class="sp-pain-card">
+                    <div class="sp-pain-card-top" style="background:linear-gradient(90deg,#F59E0B,#EF4444);"></div>
+                    <div class="sp-pain-card-body">
+                        <div class="sp-pain-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                        </div>
+                        <h3 data-tkey="web.pain.2.title">@Translations.T("web.pain.2.title", "Betaler du for meget?")</h3>
+                        <p data-tkey="web.pain.2.desc">@Translations.T("web.pain.2.desc", "Priserne stiger hvert år, men ved du om din forsikring stadig er konkurrencedygtig? Vi holder øje med din prisudvikling.")</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 sp-fade-in sp-fade-in-delay-3">
+                <div class="sp-pain-card">
+                    <div class="sp-pain-card-top" style="background:linear-gradient(90deg,#8B5CF6,var(--sp-accent));"></div>
+                    <div class="sp-pain-card-body">
+                        <div class="sp-pain-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                        </div>
+                        <h3 data-tkey="web.pain.3.title">@Translations.T("web.pain.3.title", "Er du korrekt dækket?")</h3>
+                        <p data-tkey="web.pain.3.desc">@Translations.T("web.pain.3.desc", "Det er først når skaden er sket, at man finder ud af man ikke var dækket som man troede. Vi finder hullerne i dækningen — i tide.")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     HOW IT WORKS
+     ================================================ -->
+<section class="sp-section sp-section-alt" id="how-it-works">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="sp-section-tag sp-fade-in" data-tkey="web.how.tag">@Translations.T("web.how.tag", "Sådan virker det")</div>
+                <h2 class="sp-section-title sp-fade-in" data-tkey="web.how.title">@Translations.T("web.how.title", "Tre trin til fuldt overblik over dine forsikringer")</h2>
+                <div class="mt-4">
+                    <div class="sp-step sp-fade-in sp-fade-in-delay-1">
+                        <div class="sp-step-number">1</div>
+                        <div class="sp-step-content">
+                            <h3 data-tkey="web.how.step1.title">@Translations.T("web.how.step1.title", "Del dine forsikringsdokumenter")</h3>
+                            <p data-tkey="web.how.step1.desc">@Translations.T("web.how.step1.desc", "Upload dine policer eller forbind din eksisterende forsikring. Vi analyserer dem automatisk og sikkert.")</p>
+                        </div>
+                    </div>
+                    <div class="sp-step sp-fade-in sp-fade-in-delay-2">
+                        <div class="sp-step-number">2</div>
+                        <div class="sp-step-content">
+                            <h3 data-tkey="web.how.step2.title">@Translations.T("web.how.step2.title", "AI gennemgår alt for dig")</h3>
+                            <p data-tkey="web.how.step2.desc">@Translations.T("web.how.step2.desc", "Vores AI finder undtagelser, prisstigninger og huller i din dækning — og forklarer dem i et sprog du forstår.")</p>
+                        </div>
+                    </div>
+                    <div class="sp-step sp-fade-in sp-fade-in-delay-3">
+                        <div class="sp-step-number">3</div>
+                        <div class="sp-step-content">
+                            <h3 data-tkey="web.how.step3.title">@Translations.T("web.how.step3.title", "Du får løbende opdateringer")</h3>
+                            <p data-tkey="web.how.step3.desc">@Translations.T("web.how.step3.desc", "Når noget ændrer sig hos dit forsikringsselskab, er du den første til at vide det. Din AI-agent er altid klar til spørgsmål.")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1 sp-fade-in">
+                <div class="sp-how-visual">
+                    <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:1.25rem;" data-tkey="web.how.chat.title">@Translations.T("web.how.chat.title", "AI Forsikringsagent")</div>
+                    <div class="ai-chat user-msg">
+                        <div class="chat-label" data-tkey="web.how.chat.you">@Translations.T("web.how.chat.you", "Du")</div>
+                        <div class="chat-text" data-tkey="web.how.chat.q1">@Translations.T("web.how.chat.q1", "Er jeg dækket hvis mit tag blæser af i en storm?")</div>
+                    </div>
+                    <div class="ai-chat ai-msg">
+                        <div class="chat-label" data-tkey="web.how.chat.ai">@Translations.T("web.how.chat.ai", "SurePath AI")</div>
+                        <div class="chat-text" data-tkey="web.how.chat.a1">@Translations.T("web.how.chat.a1", "Ja, stormskade på tag er dækket (§4.2). Stormen skal dog registreres som vindstyrke 8+ af DMI. Din selvrisiko er 2.500 kr.")</div>
+                    </div>
+                    <div class="ai-chat user-msg">
+                        <div class="chat-label" data-tkey="web.how.chat.you">@Translations.T("web.how.chat.you", "Du")</div>
+                        <div class="chat-text" data-tkey="web.how.chat.q2">@Translations.T("web.how.chat.q2", "Hvad er undtagelserne?")</div>
+                    </div>
+                    <div class="ai-chat ai-msg">
+                        <div class="chat-label" data-tkey="web.how.chat.ai">@Translations.T("web.how.chat.ai", "SurePath AI")</div>
+                        <div class="chat-text" data-tkey="web.how.chat.a2">@Translations.T("web.how.chat.a2", "Skader ved manglende vedligehold er ikke dækket. Jeg har fundet 3 andre undtagelser du bør kende — vil du se dem?")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     FEATURES
+     ================================================ -->
+<section class="sp-section" id="features" style="background:var(--sp-bg);">
+    <div class="container">
+        <div class="text-center mb-5 sp-fade-in">
+            <div class="sp-section-tag" data-tkey="web.features.tag">@Translations.T("web.features.tag", "Hvad får du")</div>
+            <h2 class="sp-section-title" data-tkey="web.features.title">@Translations.T("web.features.title", "Alt hvad du behøver for at forstå dine forsikringer")</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-1">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.1.title">@Translations.T("web.feature.1.title", "AI Forsikringsagent")</h3>
+                    <p data-tkey="web.feature.1.desc">@Translations.T("web.feature.1.desc", "Stil din personlige AI alle spørgsmål om dine forsikringer. Tilgængelig 24/7 — uden at dit forsikringsselskab ved det.")</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-2">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.2.title">@Translations.T("web.feature.2.title", "Prisudvikling")</h3>
+                    <p data-tkey="web.feature.2.desc">@Translations.T("web.feature.2.desc", "Se din prishistorik og få besked når din præmie ændrer sig uventet. Forstå hvad du reelt betaler over tid.")</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-3">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.3.title">@Translations.T("web.feature.3.title", "Dækningsanalyse")</h3>
+                    <p data-tkey="web.feature.3.desc">@Translations.T("web.feature.3.desc", "Er du over- eller underdækket? Vi kortlægger præcist hvad du er dækket af og hvad du mangler.")</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-1">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.4.title">@Translations.T("web.feature.4.title", "Undtagelsesfinder")</h3>
+                    <p data-tkey="web.feature.4.desc">@Translations.T("web.feature.4.desc", "Vi finder de undtagelser i det med småt, som kan betyde at du ikke er dækket når skaden sker.")</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-2">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                            <line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.5.title">@Translations.T("web.feature.5.title", "Løbende overvågning")</h3>
+                    <p data-tkey="web.feature.5.desc">@Translations.T("web.feature.5.desc", "Vi holder øje med ændringer i forsikringsselskabernes betingelser og giver dig besked med det samme.")</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 sp-fade-in sp-fade-in-delay-3">
+                <div class="sp-feature-card">
+                    <div class="sp-feature-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    <h3 data-tkey="web.feature.6.title">@Translations.T("web.feature.6.title", "100% uvildig")</h3>
+                    <p data-tkey="web.feature.6.desc">@Translations.T("web.feature.6.desc", "Vi arbejder udelukkende for dig. Vi har ingen aftaler med forsikringsselskaber og ingen skjulte interesser.")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     PRICING
+     ================================================ -->
+<section class="sp-section sp-section-alt" id="pricing">
+    <div class="container">
+        <div class="text-center mb-5 sp-fade-in">
+            <div class="sp-section-tag" data-tkey="web.pricing.tag">@Translations.T("web.pricing.tag", "Simpel pris")</div>
+            <h2 class="sp-section-title" data-tkey="web.pricing.title">@Translations.T("web.pricing.title", "Ét abonnement. Komplet overblik.")</h2>
+        </div>
+        <div class="sp-fade-in">
+            <div class="sp-pricing-card">
+                <div class="sp-pricing-badge" data-tkey="web.pricing.badge">@Translations.T("web.pricing.badge", "Komplet adgang")</div>
+                <div class="text-center mb-4">
+                    <div class="sp-price">200 <span>kr / år</span></div>
+                    <div class="mt-2" style="color:var(--sp-muted);font-size:0.9rem;" data-tkey="web.pricing.monthly">@Translations.T("web.pricing.monthly", "Svarende til 17 kr om måneden")</div>
+                </div>
+                <div class="mb-4">
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f1">@Translations.T("web.pricing.f1", "Ubegrænset AI-forsikringsagent")</span>
+                    </div>
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f2">@Translations.T("web.pricing.f2", "Løbende overvågning af dine forsikringer")</span>
+                    </div>
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f3">@Translations.T("web.pricing.f3", "Prisudviklingshistorik")</span>
+                    </div>
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f4">@Translations.T("web.pricing.f4", "Undtagelses- og dækningsanalyse")</span>
+                    </div>
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f5">@Translations.T("web.pricing.f5", "Notifikationer ved ændringer")</span>
+                    </div>
+                    <div class="sp-pricing-feature">
+                        <div class="sp-check">&#10003;</div>
+                        <span data-tkey="web.pricing.f6">@Translations.T("web.pricing.f6", "Alle forsikringstyper inkluderet")</span>
+                    </div>
+                </div>
+                <a href="https://localhost:7228" class="btn-sp-primary d-block text-center" data-tkey="web.pricing.cta">@Translations.T("web.pricing.cta", "Kom i gang") &rarr;</a>
+                <p class="text-center mt-3 mb-0" style="font-size:0.82rem;color:var(--sp-muted);" data-tkey="web.pricing.note">@Translations.T("web.pricing.note", "Ingen binding. Opsig når du vil.")</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     TRUST
+     ================================================ -->
+<section class="sp-section sp-section-dark">
+    <div class="container text-center">
+        <div class="sp-fade-in">
+            <div class="sp-section-tag" data-tkey="web.trust.tag">@Translations.T("web.trust.tag", "Uvildig rådgivning")</div>
+            <h2 class="sp-section-title" data-tkey="web.trust.title">@Translations.T("web.trust.title", "Vi arbejder udelukkende for dig")</h2>
+            <p class="sp-section-sub mx-auto mb-5" data-tkey="web.trust.sub">@Translations.T("web.trust.sub", "SurePath er 100% uvildig. Vi har ingen kommercielle aftaler med forsikringsselskaber og tjener intet på dine valg. Vores eneste interesse er at give dig det bedste overblik.")</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-6 col-md-3 sp-fade-in sp-fade-in-delay-1">
+                <div class="sp-trust-badge">
+                    <div class="sp-trust-icon-lg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" />
+                        </svg>
+                    </div>
+                    <span data-tkey="web.trust.b1">@Translations.T("web.trust.b1", "Ingen forsikringsaftaler")</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 sp-fade-in sp-fade-in-delay-2">
+                <div class="sp-trust-badge">
+                    <div class="sp-trust-icon-lg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                    </div>
+                    <span data-tkey="web.trust.b2">@Translations.T("web.trust.b2", "GDPR-compliant")</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 sp-fade-in sp-fade-in-delay-3">
+                <div class="sp-trust-badge">
+                    <div class="sp-trust-icon-lg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                        </svg>
+                    </div>
+                    <span data-tkey="web.trust.b3">@Translations.T("web.trust.b3", "Ingen skjulte gebyrer")</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 sp-fade-in sp-fade-in-delay-4">
+                <div class="sp-trust-badge">
+                    <div class="sp-trust-icon-lg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <span data-tkey="web.trust.b4">@Translations.T("web.trust.b4", "Altid tilgængelig")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================
+     FINAL CTA
+     ================================================ -->
+<section class="sp-final-cta">
+    <div class="container sp-fade-in">
+        <h2 data-tkey="web.cta.title">@Translations.T("web.cta.title", "Klar til at få styr på dine forsikringer?")</h2>
+        <p data-tkey="web.cta.sub">@Translations.T("web.cta.sub", "Slut med at gætte. Start med at vide. For kun 200 kr om året.")</p>
+        <a href="https://localhost:7228" class="btn-sp-primary" data-tkey="web.cta.btn">@Translations.T("web.cta.btn", "Kom i gang nu") &rarr;</a>
+    </div>
+</section>
