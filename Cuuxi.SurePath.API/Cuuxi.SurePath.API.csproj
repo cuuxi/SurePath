@@ -11,4 +11,8 @@
     <PackageReference Include="Cuuxi.Toolbox.Framework.Connector" Version="0.0.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cuuxi.SurePath.API.BLL\Cuuxi.SurePath.API.BLL.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,30 +1,38 @@
 using Cuuxi.SurePath.DAL.Models.DTO;
+using Cuuxi.SurePath.Portal.BLL.Models;
+using System.Net.Http.Json;
 
 namespace Cuuxi.SurePath.Portal.BLL.Services
 {
     public class UserService : BaseService
     {
-        public UserService(Connector connector) : base(connector) { }
+        private readonly HttpClient _httpClient;
 
-        public Task<UserLoginDto?> FindLoginAsync(string provider, string username) =>
-            Connector.DAL.UserLogins.FindAsync(provider, username);
-
-        public async Task<bool> VerifyPasswordAsync(string provider, string username, string password)
+        public UserService(Connector connector) : base(connector)
         {
-            var secret = await Connector.DAL.UserLogins.GetSecretAsync(provider, username);
-            return secret is not null && BCrypt.Net.BCrypt.Verify(password, secret);
+            _httpClient = new HttpClient { BaseAddress = new Uri(connector.settings.ApiUrl) };
         }
 
-        public Task LogLoginAttemptAsync(string provider, string username, bool success, int? userId = null) =>
-            Connector.DAL.UserLoginLogs.CreateAsync(provider, username, success, userId);
+        public Task<LoginResult?> LoginAsync(string provider, string username, string password) =>
+            _httpClient.PostAsJsonAsync("api/auth/login", new { provider, username, password })
+                .ContinueWith(t => t.Result.Content.ReadFromJsonAsync<LoginResult>()).Unwrap();
 
         public Task<UserDto?> GetAsync(int id) =>
-            Connector.DAL.Users.GetAsync(id);
+            _httpClient.GetFromJsonAsync<UserDto>($"api/users/{id}");
 
-        public Task<UserDto?> UpdateAsync(int id, string? firstName = null, string? lastName = null, string? countryCode = null) =>
-            Connector.DAL.Users.UpdateAsync(id, firstName: firstName, lastName: lastName, countryCode: countryCode);
+        public async Task<UserDto?> UpdateAsync(int id, string? firstName = null, string? lastName = null, string? countryCode = null)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/users/{id}", new { firstName, lastName, countryCode });
+            return await response.Content.ReadFromJsonAsync<UserDto>();
+        }
 
         public Task<List<CountryDto>> GetCountriesAsync() =>
-            Connector.DAL.Countries.GetAllAsync();
+            _httpClient.GetFromJsonAsync<List<CountryDto>>("api/countries")!;
+
+        public override void Dispose()
+        {
+            _httpClient.Dispose();
+            base.Dispose();
+        }
     }
 }

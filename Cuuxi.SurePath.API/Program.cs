@@ -1,9 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("SurePath")!;
+builder.Services.AddScoped<Cuuxi.SurePath.API.BLL.Settings>(_ =>
+    new Cuuxi.SurePath.API.BLL.Settings(connectionString));
+builder.Services.AddScoped<Cuuxi.SurePath.API.BLL.Connector>();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();

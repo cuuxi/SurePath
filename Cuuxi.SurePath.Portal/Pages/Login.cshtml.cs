@@ -33,34 +33,21 @@ public class LoginModel : PageModel
     {
         await _translations.EnsureLoadedAsync();
 
-        var login = await _connector.Users.FindLoginAsync("Basic", Username);
+        var result = await _connector.Users.LoginAsync("Basic", Username, Password);
 
-        if (login is null)
+        if (result is null || !result.Success)
         {
-            await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: false);
-            ErrorMessage = _translations.T("portal.login.error.invalid", "Ukendt brugernavn eller forkert adgangskode.");
-            return Page();
-        }
-
-        var valid = await _connector.Users.VerifyPasswordAsync("Basic", Username, Password);
-        var user = valid ? await _connector.Users.GetAsync(login.UserId) : null;
-
-        if (!valid || user is null || !user.IsActive)
-        {
-            await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: false, userId: login.UserId);
-            ErrorMessage = valid && user is not null
+            ErrorMessage = result?.ErrorType == "inactive"
                 ? _translations.T("portal.login.error.inactive", "Din konto er ikke aktiv.")
                 : _translations.T("portal.login.error.invalid", "Ukendt brugernavn eller forkert adgangskode.");
             return Page();
         }
 
-        await _connector.Users.LogLoginAttemptAsync("Basic", Username, success: true, userId: user.Id);
-
         var claims = new List<Claim>
         {
-            new("userId", user.Id.ToString()),
-            new("firstName", user.FirstName),
-            new("lastName", user.LastName)
+            new("userId", result.UserId!.Value.ToString()),
+            new("firstName", result.FirstName!),
+            new("lastName", result.LastName!)
         };
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));

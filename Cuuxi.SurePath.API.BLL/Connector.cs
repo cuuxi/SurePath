@@ -26,14 +26,14 @@ namespace Cuuxi.SurePath.API.BLL
             get
             {
                 if (this._DAL == null)
-                    this._DAL = new DAL.Connector(new API.DAL.Settings());
+                    this._DAL = new DAL.Connector(new API.DAL.Settings(settings.ConnectionString));
 
                 return this._DAL;
             }
         }
 
-
         public TestService Test => this.connectorHandler.GetRepository<TestService>();
+        public UserService Users => this.connectorHandler.GetRepository<UserService>();
 
 
         public void Dispose()

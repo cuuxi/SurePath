@@ -16,9 +16,8 @@ namespace Cuuxi.SurePath.Portal.BLL.Services
             this.Connector = connector;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-          
         }
     }
 }

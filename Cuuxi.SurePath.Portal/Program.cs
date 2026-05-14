@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("SurePath")!;
+var apiUrl = builder.Configuration["ApiBaseUrl"]!;
 builder.Services.AddScoped<Cuuxi.SurePath.Portal.BLL.Settings>(_ =>
-    new Cuuxi.SurePath.Portal.BLL.Settings(connectionString));
+    new Cuuxi.SurePath.Portal.BLL.Settings(connectionString, apiUrl));
 builder.Services.AddScoped<Cuuxi.SurePath.Portal.BLL.Connector>();
 
 builder.Services.AddHttpContextAccessor();
