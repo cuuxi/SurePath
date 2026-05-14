@@ -1,16 +1,11 @@
 using Cuuxi.SurePath.Backend.Services;
-using Cuuxi.SurePath.DAL;
-using Cuuxi.SurePath.DAL.DbContexts;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SurePathDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SurePath")));
-
-builder.Services.AddScoped<Settings>(sp =>
-    new Settings(sp.GetRequiredService<SurePathDbContext>()));
-builder.Services.AddScoped<Connector>();
+var connectionString = builder.Configuration.GetConnectionString("SurePath")!;
+builder.Services.AddScoped<Cuuxi.SurePath.Backend.BLL.Settings>(_ =>
+    new Cuuxi.SurePath.Backend.BLL.Settings(connectionString));
+builder.Services.AddScoped<Cuuxi.SurePath.Backend.BLL.Connector>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TranslationService>();

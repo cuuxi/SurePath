@@ -19,7 +19,6 @@ namespace Cuuxi.SurePath.DAL
             return new Connector(this.settings);
         }
 
-
         public TestRepository Test => this.connectorHandler.GetRepository<TestRepository>();
         public SystemSettingsRepository SystemSettings => this.connectorHandler.GetRepository<SystemSettingsRepository>();
         public CountriesRepository Countries => this.connectorHandler.GetRepository<CountriesRepository>();
@@ -30,10 +29,10 @@ namespace Cuuxi.SurePath.DAL
         public TranslationKeysRepository TranslationKeys => this.connectorHandler.GetRepository<TranslationKeysRepository>();
         public TranslationsRepository Translations => this.connectorHandler.GetRepository<TranslationsRepository>();
 
-
         public void Dispose()
         {
             this.connectorHandler.Dispose();
+            this.settings.Dispose();
         }
     }
 }

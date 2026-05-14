@@ -1,4 +1,4 @@
-using Cuuxi.SurePath.DAL;
+using Cuuxi.SurePath.Backend.BLL;
 
 namespace Cuuxi.SurePath.Backend.Services;
 

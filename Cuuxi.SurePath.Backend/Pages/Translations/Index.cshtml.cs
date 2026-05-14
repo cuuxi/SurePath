@@ -1,5 +1,5 @@
+using Cuuxi.SurePath.Backend.BLL;
 using Cuuxi.SurePath.Backend.Services;
-using Cuuxi.SurePath.DAL;
 using Cuuxi.SurePath.DAL.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,14 +24,14 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         await _translations.EnsureLoadedAsync();
-        Keys = await _connector.TranslationKeys.GetAllAsync();
+        Keys = await _connector.Translations.GetAllKeysAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
         await _translations.EnsureLoadedAsync();
         if (!string.IsNullOrWhiteSpace(NewKey))
-            await _connector.TranslationKeys.CreateAsync(NewKey.Trim(), NewDescription?.Trim());
+            await _connector.Translations.CreateKeyAsync(NewKey.Trim(), NewDescription?.Trim());
 
         return RedirectToPage();
     }

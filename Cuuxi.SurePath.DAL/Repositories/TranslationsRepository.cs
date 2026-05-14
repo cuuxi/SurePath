@@ -29,6 +29,12 @@ namespace Cuuxi.SurePath.DAL.Repositories
                 .Select(e => new TranslationDto { Id = e.Id, LanguageCode = e.LanguageCode, Key = e.Key, Value = e.Value })
                 .ToListAsync();
 
+        public async Task<List<TranslationDto>> GetAllForKeyAsync(string key)
+            => await settings.DbContext.Translations
+                .Where(e => e.Key == key)
+                .Select(e => new TranslationDto { Id = e.Id, LanguageCode = e.LanguageCode, Key = e.Key, Value = e.Value })
+                .ToListAsync();
+
         public async Task<Dictionary<string, string>> GetDictionaryAsync(string languageCode)
             => await settings.DbContext.Translations
                 .Where(e => e.LanguageCode == languageCode)

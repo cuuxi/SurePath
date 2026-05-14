@@ -1,5 +1,5 @@
+using Cuuxi.SurePath.Backend.BLL;
 using Cuuxi.SurePath.Backend.Services;
-using Cuuxi.SurePath.DAL;
 using Cuuxi.SurePath.DAL.Models.DTO;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,6 +23,6 @@ public class DetailsModel : PageModel
         await _translations.EnsureLoadedAsync();
         User = await _connector.Users.GetAsync(id);
         if (User is not null)
-            LoginLogs = await _connector.UserLoginLogs.GetByUserAsync(id);
+            LoginLogs = await _connector.Users.GetLoginLogsAsync(id);
     }
 }

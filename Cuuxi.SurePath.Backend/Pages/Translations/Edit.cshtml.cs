@@ -1,5 +1,5 @@
+using Cuuxi.SurePath.Backend.BLL;
 using Cuuxi.SurePath.Backend.Services;
-using Cuuxi.SurePath.DAL;
 using Cuuxi.SurePath.DAL.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,24 +29,18 @@ public class EditModel : PageModel
     {
         await _translations.EnsureLoadedAsync();
         Key = key;
-        var keyDto = await _connector.TranslationKeys.GetAsync(key);
+        var keyDto = await _connector.Translations.GetKeyAsync(key);
         Description = keyDto?.Description;
-        Languages = await _connector.Languages.GetAllActiveAsync();
-        Existing = await _connector.Translations.GetAllForLanguageAsync(key);
+        Languages = await _connector.Translations.GetActiveLanguagesAsync();
+        Existing = await _connector.Translations.GetTranslationsForKeyAsync(key);
     }
 
     public async Task<IActionResult> OnPostAsync(string key)
     {
         await _translations.EnsureLoadedAsync();
-        foreach (var v in Values)
-        {
-            if (string.IsNullOrEmpty(v.LanguageCode)) continue;
-            var existing = await _connector.Translations.GetAsync(v.LanguageCode, key);
-            if (existing is null)
-                await _connector.Translations.CreateAsync(v.LanguageCode, key, v.Value ?? string.Empty);
-            else
-                await _connector.Translations.UpdateAsync(existing.Id, v.Value ?? string.Empty);
-        }
+        await _connector.Translations.SaveAsync(key,
+            Values.Where(v => !string.IsNullOrEmpty(v.LanguageCode))
+                  .ToDictionary(v => v.LanguageCode, v => v.Value));
 
         TempData["Success"] = _translations.T("backend.translations.saved", "Oversættelser gemt.");
         return RedirectToPage(new { key });

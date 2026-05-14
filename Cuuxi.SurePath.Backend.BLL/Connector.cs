@@ -7,6 +7,7 @@ namespace Cuuxi.SurePath.Backend.BLL
     {
         internal readonly Settings settings;
         private readonly ConnectorHandler connectorHandler;
+        private DAL.Connector? _DAL;
 
         public Connector(Settings settings)
         {
@@ -19,22 +20,18 @@ namespace Cuuxi.SurePath.Backend.BLL
             return new Connector(this.settings);
         }
 
-
-        private DAL.Connector? _DAL;
         internal DAL.Connector DAL
         {
             get
             {
-                if (this._DAL == null)
-                    this._DAL = new DAL.Connector(new Backend.DAL.Settings());
-
-                return this._DAL;
+                _DAL ??= new DAL.Connector(new DAL.Settings(settings.ConnectionString));
+                return _DAL;
             }
         }
 
-
         public TestService Test => this.connectorHandler.GetRepository<TestService>();
-
+        public UserService Users => this.connectorHandler.GetRepository<UserService>();
+        public TranslationService Translations => this.connectorHandler.GetRepository<TranslationService>();
 
         public void Dispose()
         {
